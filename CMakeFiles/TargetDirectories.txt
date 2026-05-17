@@ -1,0 +1,3 @@
+/mnt/c/Users/admin/Desktop/FINAL_P/mini_AMAZON/CMakeFiles/mini_amazon.dir
+/mnt/c/Users/admin/Desktop/FINAL_P/mini_AMAZON/CMakeFiles/edit_cache.dir
+/mnt/c/Users/admin/Desktop/FINAL_P/mini_AMAZON/CMakeFiles/rebuild_cache.dir
