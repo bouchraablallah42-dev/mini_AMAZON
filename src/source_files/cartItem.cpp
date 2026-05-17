@@ -27,10 +27,11 @@ void CartItem::setQuantity(int quantity) {
     this->quantity = quantity;
 }
 // Method to display cart item information
-void CartItem::display() {
-    cout << "Product: " << this->product.getName_product() << endl;
-    cout << "Price: " << this->product.getPrice() << endl;
-    cout << "Quantity: " << this->quantity << endl;
+ostream& operator<<(ostream& out, const CartItem& item) {
+    out << "Product: " << item.product.getName_product() << endl;
+    out << "Price: " << item.product.getPrice() << endl;
+    out << "Quantity: " << item.quantity << endl;
+    return out;
 }
 double CartItem::calculateTotalPrice() {
     return this->product.getPrice() * this->quantity;

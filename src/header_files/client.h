@@ -36,7 +36,7 @@ class Client {
     // Method to register a new client
     void registerClient();
     // Method to load clients from a file
-    vector<Client> loadClient() ;
+    vector<Client> loadClient(string filename) ;
     // methode to confirm the client identity by checking the email and password
     bool confirmIdentity();
     // Method to display client information

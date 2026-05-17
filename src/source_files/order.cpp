@@ -90,7 +90,7 @@ void Order::display() {
     cout << "Date: " << this->date << endl;
     cout << "Items: " << endl;
     for (CartItem item : this->items_order) {
-        item.display();
+        cout << item << endl;
     }
 }
 // Method to calculate the total price of the order

@@ -23,6 +23,7 @@ void Cart::setItems(vector<CartItem> items) {
 void Cart::addItem( Product p, int quantity) {
     if (p.getStock() < quantity) {
         cout << "Insufficient stock for item " << p.getName_product() << ". Item not added to cart." << endl;
+        cout << "*****************************************" << endl;
         return;
     }
 
@@ -55,7 +56,8 @@ void Cart::display() {
         return;
     }
     for (CartItem item : this->items) {
-        item.display();
+        cout << item << endl;
+        cout << "----------------------------------" << endl;
     }
     cout << "==================================" << endl;
     cout << "Total Price: " << this->calculateTotal() << endl;

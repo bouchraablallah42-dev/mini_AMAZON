@@ -10,9 +10,10 @@ class Product {
         string name_product;
         double price;
         int stock;
+        string category;
     public:
         Product();
-        Product(int id_product, string name_product , double price , int stock );
+        Product(int id_product, string name_product , double price , int stock , string category);
         Product(const Product& other);
         // Getters & Setters 
         int getId_product() const;
@@ -23,9 +24,13 @@ class Product {
         void setPrice(double price);
         int getStock() const;
         void setStock(int stock);
-        // Method to display product information
-        void display();
+        string getCategory() const;
+        void setCategory(string category);
+        // Method to reduce stock when a product is added to the cart
         void reduceStock(int quantity);
+        // Overloading operators
+        friend ostream& operator<<(ostream& out , const Product& p);
+        friend istream& operator>>(istream& in ,Product& p);
         // Destructor       
         ~Product();
 

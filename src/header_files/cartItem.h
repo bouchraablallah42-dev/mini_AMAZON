@@ -19,7 +19,7 @@ class CartItem {
     int getQuantity() const;    
     void setQuantity(int quantity);
     // Method to display cart item information
-    void display();
+    friend ostream& operator<<(ostream& out, const CartItem& item);
     double calculateTotalPrice();
      // Destructor  
     ~CartItem();

@@ -59,9 +59,28 @@ void Client::registerClient() {
     cin >> this->email_client;
     cout << "Enter client password: ";
     cin >> this->password_client;
+    if ("clients.txt" == ""){
+        this->id_client = 1 ;
+    } else {
+        ifstream file("clients.txt");
+        if (file.is_open()) {
+            string line;
+            while (getline(file, line)) {
+                int id;
+                string name, email, password;
+                istringstream iss(line);
+                if (!(iss >> id >> name >> email >> password)) { break; }
+                this->id_client = id + 1; // Increment the ID for the new client
+            }
+            file.close();
+        } else {
+            cout << "Unable to open file." << endl;
+        }
+    }
     ofstream file("clients.txt", ios::app);
+
     if (file.is_open()) {
-        file << this->id_client << "," << this->name_client << "," << this->email_client << "," << this->password_client << endl;
+        file << this->id_client << " " << this->name_client << " " << this->email_client << " " << this->password_client << endl;
         file.close();
         cout << "Client registered successfully!" << endl;
     } else {
@@ -69,14 +88,15 @@ void Client::registerClient() {
     }
 }
 // Method to load clients from a file
-vector<Client> Client::loadClient(){
+vector<Client> Client::loadClient(string filename){
     vector<Client> clients;
-    ifstream file("clients.txt");
+    ifstream file(filename);
     if (file.is_open()) {
         string line;
-        string  email_client, password_client;
-        while (file >>email_client >> password_client) {
-            clients.push_back(Client(0, "", email_client, password_client, Cart(), vector<string>()));
+        int id_client;
+        string name_client,  email_client, password_client;
+        while (file >>id_client>>name_client>>email_client >> password_client) {
+            clients.push_back(Client(id_client, name_client, email_client, password_client, Cart(), vector<string>()));
         }
         file.close();
     } else {
@@ -92,50 +112,44 @@ void Client::setPurchaseHistory(vector<string> purchase_history) {
 }
 // methode to confirm the client identity by checking the email and password
 bool Client::confirmIdentity() {
-    vector<Client> client_data = loadClient();
+    vector<Client> client_data = loadClient("clients.txt");
     string email, password;
-    cout << "Confirming identity for email: ";
-    cin >> email;
-    cout << "Confirming identity for password: ";
-    cin >> password;
     int i =0;
     do{
+        cout << "Confirming identity for email: ";
+        cin >> email;
+        cout << "Confirming identity for password: ";
+        cin >> password;
         for (const auto& client : client_data) {
         if (client.getEmailClient() == email && client.getPasswordClient() == password) {
             cout << "Identity confirmed successfully!" << endl; 
+            this->id_client = client.getIdClient();
+            this->name_client = client.getNameClient(); 
+            this->email_client = client.getEmailClient();
+            this->password_client = client.getPasswordClient();
+            this->cart_client = client.getCartClient();
+            this->purchase_history = client.getPurchaseHistory();
             return true;
         } 
     }
     cout << "Identity confirmation failed. Incorrect email or password." << endl;
     i++;
-    }while (i == 3);
+    }while (i < 3);
     cout << "Too many failed attempts. Identity confirmation failed." << endl;
     return false; 
 }
 // Method to display client information
 void Client::display() {
-    int i = 0;
-    while (i < 3) 
-    {
-        if (!confirmIdentity()) {
-            cout << "Identity confirmation failed. Cannot display client information." << endl;
-        }
-        else{ break;}
-        i++;
-        if(i == 3){
-            cout << "Too many failed attempts. Cannot display client information." << endl;
-            return;
-        }
-    }
-    cout << "Client ID: " << this->id_client << endl;
-    cout << "Client Name: " << this->name_client << endl;
-    cout << "Client Email: " << this->email_client << endl;
+     if(confirmIdentity()){
+    cout << "Client ID: " << this->getIdClient() << endl;
+    cout << "Client Name: " << this->getNameClient() << endl;
+    cout << "Client Email: " << this->getEmailClient() << endl;
     cout << "Client Cart: " << endl;
     this->cart_client.display();
     cout << "Client Purchase History: " << endl;
-    for (string purchase : this->purchase_history) {
+    for (string purchase : this->getPurchaseHistory()) {
         cout << purchase << endl;
-    }
+    }}
 }
 
 // Method to add a purchase to the purchase history
